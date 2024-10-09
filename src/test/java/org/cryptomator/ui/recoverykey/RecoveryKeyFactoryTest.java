@@ -7,13 +7,19 @@ import org.cryptomator.cryptolib.common.MasterkeyFileAccess;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.List;
+import java.util.Arrays; 
+import java.nio.file.Files; 
+import java.util.Optional;   
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class RecoveryKeyFactoryTest {
 
@@ -92,5 +98,41 @@ public class RecoveryKeyFactoryTest {
 		Mockito.verify(validator).test(Mockito.any());
 		Assertions.assertEquals(extendedValidationResult, result);
 	}
+
+	@Test
+    @DisplayName("newMasterkeyFileWithPassphrase() lève une IllegalArgumentException pour une recovery key invalide")
+    public void testNewMasterkeyFileWithPassphrase_InvalidRecoveryKey() {
+
+        Path vaultPath = Path.of("path/to/vault");
+        CharSequence newPassword = "newPassword";
+        String invalidRecoveryKey = "invalid recovery key";
+
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            inTest.newMasterkeyFileWithPassphrase(vaultPath, invalidRecoveryKey, newPassword);
+        });
+    }
+
+	@Test
+    @DisplayName("newMasterkeyFileWithPassphrase() lève une IOException quand masterkeyFileAccess.persist() échoue")
+    public void testNewMasterkeyFileWithPassphrase_PersistFails(@TempDir Path tempDir) throws IOException {
+     
+        Path vaultPath = tempDir;
+        CharSequence newPassword = "newPassword";
+
+        
+        byte[] rawKey = new byte[64];
+        Arrays.fill(rawKey, (byte) 0x01);
+        String validRecoveryKey = inTest.createRecoveryKey(rawKey);
+
+        
+        Mockito.doThrow(new IOException("Simulated IO Exception")).when(masterkeyFileAccess)
+                .persist(Mockito.any(Masterkey.class), Mockito.any(Path.class), Mockito.any(CharSequence.class));
+
+       
+        Assertions.assertThrows(IOException.class, () -> {
+            inTest.newMasterkeyFileWithPassphrase(vaultPath, validRecoveryKey, newPassword);
+        });
+    }
 
 }

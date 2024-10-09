@@ -3,6 +3,7 @@ package org.cryptomator.ui.recoverykey;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -38,5 +39,15 @@ public class WordEncoderTest {
 			return randomBytes;
 		});
 	}
+
+    @DisplayName("Le constructeur avec un fichier de mots insuffisants doit lancer une IllegalArgumentException")
+    @Test
+    public void constructorWithInsufficientWords() {
+        String insufficientWordsFile = "/words/short_words.txt";
+        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            new WordEncoder(insufficientWordsFile);
+        });
+        Assertions.assertTrue(exception.getMessage().contains("Insufficient input file: " + insufficientWordsFile));
+    }
 
 }
