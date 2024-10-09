@@ -40,8 +40,17 @@ class PreferencesComponentTest {
 
     @Test
     void testShowPreferencesWindow() {
-        // Créer un onglet de test
-        SelectedPreferencesTab testTab = SelectedPreferencesTab.UPDATES; // ou un autre onglet
+
+        //Randomized the selectedPreferencesTab value for each test.
+        SelectedPreferencesTab[] tab = SelectedPreferencesTab.values();
+        int min = 0;
+        int max = tab.length-1;
+        int randomIndex = (int)(Math.random() * (max - min + 1)) + min;
+
+
+
+
+        SelectedPreferencesTab testTab = tab[randomIndex];
 
         // Appeler la méthode sous test
         Stage stage = preferencesComponent.showPreferencesWindow(testTab);
