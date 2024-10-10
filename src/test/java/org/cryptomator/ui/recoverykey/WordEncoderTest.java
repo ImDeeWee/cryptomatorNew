@@ -40,6 +40,11 @@ public class WordEncoderTest {
 		});
 	}
 
+	/**
+    * Teste le constructeur de WordEncoder lorsqu'un fichier de mots contenant un nombre insuffisant de mots est fourni.
+    * L'objectif est de vérifier que le constructeur lève une IllegalArgumentException lorsque le fichier de mots contient
+    * moins de mots que nécessaire (4096 mots), et que le message d'erreur reflète correctement cette situation.
+    */
     @DisplayName("Le constructeur avec un fichier de mots insuffisants doit lancer une IllegalArgumentException")
     @Test
     public void constructorWithInsufficientWords() {
