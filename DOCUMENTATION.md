@@ -107,7 +107,7 @@ Cette méthode est testée pour s'assurer qu'une exception est levée lorsqu'une
 Cette méthode est testée pour vérifier que l'application gère correctement les erreurs de persistance, comme un échec d'écriture dans le système de fichiers. Le test garantit qu'une exception de type `IOException` est levée lorsqu'une erreur survient lors de la sauvegarde d'une nouvelle master key, ce qui est crucial pour éviter la corruption de données ou l'inaccessibilité des données utilisateur.
 
 
-## 6.testStoreAndLoadAfterChangePassphrase()
+## 7.testStoreAndLoadAfterChangePassphrase()
 
 ### Emplacement
 
@@ -122,7 +122,7 @@ Cette méthode est testée pour vérifier que l'application gère correctement l
 
 Cette méthode vérifie si le changement de passPhrase se fait correctement.
 
-## 7.testStoreAndLoadAfterChangePassphrase()
+## 8.testStoreAndLoadAfterChangePassphrase()
 
 ### Emplacement
 
@@ -137,7 +137,7 @@ Cette méthode vérifie si le changement de passPhrase se fait correctement.
 
 Ce test simule le catch d'erreur d'un mauvais input pour la fonction.
 
-## 8.testShowPreferencesWindow()
+## 9.testShowPreferencesWindow()
 
 ### Emplacement
 
