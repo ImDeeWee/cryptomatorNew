@@ -19,7 +19,7 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.Optional;
 
 @Singleton
-class LicenseChecker {
+public class LicenseChecker {
 
 	private final JWTVerifier verifier;
 
