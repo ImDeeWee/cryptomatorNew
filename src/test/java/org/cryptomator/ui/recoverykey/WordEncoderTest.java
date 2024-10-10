@@ -8,6 +8,12 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.List;
+
 import java.util.Random;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -53,6 +59,24 @@ public class WordEncoderTest {
             new WordEncoder(insufficientWordsFile);
         });
         Assertions.assertTrue(exception.getMessage().contains("Insufficient input file: " + insufficientWordsFile));
+    }
+
+	/**
+	* Ce test a pour objectif de vérifier que la méthode getWords() de la classe WordEncoder
+	* renvoie une liste valide. Plus précisément, nous nous assurons que la liste n'est ni nulle
+	* ni vide, ce qui garantit que les mots ont bien été chargés depuis le fichier.
+	*/
+	@Test
+	void testGetWords() {
+
+        WordEncoder wordEncoder = new WordEncoder();
+
+        List<String> words = wordEncoder.getWords();
+
+        assertNotNull(words, "La liste de mots ne doit pas être nulle.");
+        
+        assertFalse(words.isEmpty(), "La liste de mots ne doit pas être vide.");
+        
     }
 
 }

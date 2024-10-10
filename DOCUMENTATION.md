@@ -17,8 +17,25 @@
 
 Le test `constructorWithInsufficientWords()` est essentiel pour vérifier que le constructeur de la classe `WordEncoder` réagit correctement lorsqu'un fichier de mots contenant un nombre insuffisant de mots est fourni. Cela garantit que l'application lève une exception appropriée (`IllegalArgumentException`) avec un message clair en cas de données insuffisantes, ce qui est crucial pour éviter des comportements imprévisibles dans le système et garantir que les fichiers de mots utilisés répondent aux exigences minimales.
 
+## 2. testGetWords()
 
-## 2. testSearchError()
+### Emplacement
+
+- **Nom de la méthode** : `getWords()`
+- **Classe** : `WordEncoder`
+- **Fichier** : `src/main/java/org/cryptomator/ui/recoverykey/WordEncoder.java`
+
+### Emplacement du Test
+
+- **Classe de Test** : `WordEncoderTest`
+- **Fichier de Test** : `src/test/java/org/cryptomator/ui/recoverykey/WordEncoderTest.java`
+
+### Explication du Choix de cette Méthode
+
+Ce test a pour objectif de vérifier que la méthode `getWords()` de la classe `WordEncoder` renvoie une liste valide. Le test garantit que la liste de mots n'est ni nulle ni vide, ce qui indique que les mots ont été correctement chargés depuis le fichier de ressources. Ce test est important pour s'assurer que l'application peut accéder à ces mots, nécessaires pour des fonctionnalités critiques telles que l'encodage et le décodage de données.
+
+
+## 3. testSearchError()
 
 ### Emplacement
 
@@ -36,7 +53,7 @@ Le test `constructorWithInsufficientWords()` est essentiel pour vérifier que le
 La méthode searchError() est essentielle car elle permet à l'utilisateur de rechercher des solutions d'erreurs via un lien généré dynamiquement à partir du code d'erreur. Tester cette méthode garantit que le formatage de l'URL est correct et que l'application ouvre correctement le navigateur pour la recherche. Cela assure que la recherche d'erreurs fonctionne sans problème et que l'utilisateur peut accéder aux solutions pertinentes.
 
 
-## 3. testReportError()
+## 4. testReportError()
 
 ### Emplacement
 
@@ -54,7 +71,7 @@ La méthode searchError() est essentielle car elle permet à l'utilisateur de re
 La méthode reportError() est essentielle car elle génère un rapport d'erreur formaté et ouvre l'URL correspondante dans le navigateur pour permettre à l'utilisateur de signaler un problème. Tester cette méthode garantit que l'URL est correctement construite avec les informations du système d'exploitation et de la version de l'application, qu'elle contient les détails de l'erreur et respecte le format attendu pour l'intégration avec GitHub. Cela permet également de vérifier que l'intégration avec JavaFX via HostServices.showDocument() fonctionne correctement, en s'assurant que le navigateur s'ouvre bien avec l'URL correcte. Ce test confirme ainsi que la fonctionnalité de rapport d'erreurs est correctement implémentée, offrant une expérience utilisateur fluide lors du signalement de problèmes.
 
 
-## 4. testNewMasterkeyFileWithPassphrase_InvalidRecoveryKey()
+## 5. testNewMasterkeyFileWithPassphrase_InvalidRecoveryKey()
 
 ### Emplacement
 
@@ -72,7 +89,7 @@ La méthode reportError() est essentielle car elle génère un rapport d'erreur 
 Cette méthode est testée pour s'assurer qu'une exception est levée lorsqu'une recovery key invalide est fournie. Il est important de garantir que l'application réagit correctement aux entrées invalides et qu'elle gère les erreurs de manière sécurisée, sans compromettre la sécurité ou l'intégrité des données.
 
 
-## 5. testNewMasterkeyFileWithPassphrase_PersistFails()
+## 6. testNewMasterkeyFileWithPassphrase_PersistFails()
 
 ### Emplacement
 
