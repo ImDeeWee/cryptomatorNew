@@ -4,6 +4,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.cryptomator.common.LicenseHolder;
 import org.cryptomator.ui.preferences.PreferencesComponent;
 import org.cryptomator.ui.preferences.SelectedPreferencesTab;
 import org.junit.jupiter.api.Assertions;
@@ -21,23 +22,30 @@ class PreferencesComponentTest {
     private Lazy<Scene> mockScene;
     private ObjectProperty<SelectedPreferencesTab> selectedTabProperty;
 
+    /**
+     * Création d'un mock de la scène pour la simuler.
+     */
     @BeforeEach
     void setUp() {
-        // Mocker les dépendances
+
         mockStage = mock(Stage.class);
         mockScene = mock(Lazy.class);
         selectedTabProperty = new SimpleObjectProperty<>();
 
-        // Créer une instance de la classe sous test en mockant l'interface
+
         preferencesComponent = mock(PreferencesComponent.class, Mockito.CALLS_REAL_METHODS);
 
-        // Simuler les méthodes de l'interface
+
         when(preferencesComponent.window()).thenReturn(mockStage);
         when(preferencesComponent.scene()).thenReturn(mockScene);
         when(mockScene.get()).thenReturn(mock(Scene.class));
         when(preferencesComponent.selectedTabProperty()).thenReturn(selectedTabProperty);
     }
 
+    /**
+     * Cette fonction tests si la fonction {@link PreferencesComponent#showPreferencesWindow(SelectedPreferencesTab)} retourne le correct {@link SelectedPreferencesTab} selectionne
+     * si le stage est bel et bien configure. La selection du {@link SelectedPreferencesTab} se fait aleatoirement entre tous les options valides lors de chaque execution du test.
+     */
     @Test
     void testShowPreferencesWindow() {
 
@@ -52,13 +60,13 @@ class PreferencesComponentTest {
 
         SelectedPreferencesTab testTab = tab[randomIndex];
 
-        // Appeler la méthode sous test
+
         Stage stage = preferencesComponent.showPreferencesWindow(testTab);
 
-        // Vérifier que l'onglet a été mis à jour correctement
+
         Assertions.assertEquals(testTab, selectedTabProperty.get());
 
-        // Vérifier que la scène et la fenêtre sont configurées correctement
+
         verify(mockStage).setScene(mockScene.get());
         verify(mockStage).setMinWidth(420);
         verify(mockStage).setMinHeight(300);

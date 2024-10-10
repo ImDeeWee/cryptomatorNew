@@ -9,13 +9,19 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import org.cryptomator.common.settings.Settings;
 import org.junit.jupiter.api.*;
 
-
+/**
+ * Pour la creation de cette classe de test, on d du change la protection de la classe {@link LicenseChecker} qui n'avait de protection a publique pour la creation de ces tests.
+ * Le changement ne devrait absolument pas modifier le comportement du programme s'il est bien programme.
+ */
 public class LicenseHolderTest {
 
     private LicenseChecker licenseChecker;
     private Settings settings;
     private LicenseHolder licenseHolder;
 
+    /**
+     * Creation d'un Mockito de licenseChecker et de settings pour les simuler lors des tests.
+     */
     @BeforeEach
     public void setUp() {
 
@@ -27,31 +33,36 @@ public class LicenseHolderTest {
         licenseHolder = new LicenseHolder(licenseChecker, settings);
     }
 
+    /**
+     * Cette fonction teste si la fonction {@link LicenseHolder#isValidLicense()} retourne vrai lorsque la clé de license est valide.
+     */
     @Test
-    public void testConstructorWithValidLicense() {
+    public void testWithValidLicense() {
         // Simulation d'une licence valide
         DecodedJWT jwt = mock(DecodedJWT.class);
         when(licenseChecker.check(anyString())).thenReturn(Optional.of(jwt));
 
-        // Simulation du retour de la clé de licence
+
         when(settings.licenseKey.get()).thenReturn("valid_license_key");
 
-        // Re-initialisation du LicenseHolder avec les conditions
+
         licenseHolder = new LicenseHolder(licenseChecker, settings);
 
-        // Vérification que la licence est valide
+
         Assertions.assertTrue(licenseHolder.isValidLicense());
     }
-
+    /**
+     * Cette fonction teste si la fonction {@link LicenseHolder#isValidLicense()} retourne faux lorsque la clé de license n'est pas valide.
+     */
     @Test
-    public void testConstructorWithInvalidLicense() {
-        // Simulation d'une licence invalide
+    public void testWithInvalidLicense() {
+
         when(licenseChecker.check(anyString())).thenReturn(Optional.empty());
 
-        // Re-initialisation du LicenseHolder
+
         licenseHolder = new LicenseHolder(licenseChecker, settings);
 
-        // Vérification que la licence n'est pas valide
+
         Assertions.assertFalse(licenseHolder.isValidLicense());
     }
 
