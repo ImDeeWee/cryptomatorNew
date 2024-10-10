@@ -106,3 +106,48 @@ Cette méthode est testée pour s'assurer qu'une exception est levée lorsqu'une
 
 Cette méthode est testée pour vérifier que l'application gère correctement les erreurs de persistance, comme un échec d'écriture dans le système de fichiers. Le test garantit qu'une exception de type `IOException` est levée lorsqu'une erreur survient lors de la sauvegarde d'une nouvelle master key, ce qui est crucial pour éviter la corruption de données ou l'inaccessibilité des données utilisateur.
 
+
+## 6.testStoreAndLoadAfterChangePassphrase()
+
+### Emplacement
+
+- **Nom de la méthode** : `public char[] loadPassphrase(String key)`
+- **Classe** : `KeychainManager`
+- **Fichier**: `src/main/java/org/cryptomator/common/keychain/KeychainManager.java`
+
+### Emplacement du Test
+
+- **Classe de Test** : `KeychainManagerTest`
+- **Fichier de Test** : `src/test/java/org/cryptomator/common/keychain/KeychainManagerTest.java`
+
+Cette méthode vérifie si le changement de passPhrase se fait correctement.
+
+## 7.testStoreAndLoadAfterChangePassphrase()
+
+### Emplacement
+
+- **Nom de la méthode** : `public char[] loadPassphrase(String key)`
+- **Classe** : `KeychainManager`
+- **Fichier**: `src/main/java/org/cryptomator/common/keychain/KeychainManager.java`
+
+### Emplacement du Test
+
+- **Classe de Test** : `KeychainManagerTest`
+- **Fichier de Test** : `src/test/java/org/cryptomator/common/keychain/KeychainManagerTest.java`
+
+Ce test simule le catch d'erreur d'un mauvais input pour la fonction.
+
+## 8.testShowPreferencesWindow()
+
+### Emplacement
+
+- **Nom de la méthode** : `default Stage showPreferencesWindow(SelectedPreferencesTab selectedTab)`
+- **Classe** : `PreferencesComponent`
+- **Fichier**: `src/main/java/org/cryptomator/ui/preferences/PreferencesComponent.java`
+
+### Emplacement du Test
+
+- **Classe de Test** : `PreferencesComponentTest`
+- **Fichier de Test** : `src/test/java/org/cryptomator/ui/preferences/PreferencesComponentTest.java`
+
+Cette méthode modifie selectTab de la scene et applique les dimensions voulues.
