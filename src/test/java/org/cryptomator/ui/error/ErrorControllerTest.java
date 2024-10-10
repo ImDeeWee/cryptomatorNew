@@ -3,8 +3,10 @@ package org.cryptomator.ui.error;
 import org.cryptomator.common.Environment;
 import org.cryptomator.common.ErrorCode;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mockito;
@@ -12,7 +14,13 @@ import org.mockito.Mockito;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutorService;
+import java.util.Optional;
+import javafx.application.HostServices;
+
 
 class ErrorControllerTest {
 
@@ -24,6 +32,7 @@ class ErrorControllerTest {
 	Environment environment;
 	ExecutorService executorService;
 	ErrorController errorController;
+
 
 	@BeforeEach
 	public void beforeEach() {
@@ -142,4 +151,62 @@ class ErrorControllerTest {
 		boolean result = errorController.containsMethodCode(ed);
 		Assertions.assertEquals(expectedResult, result);
 	}
+
+
+	/**
+	* Vérifie que la méthode reportError() génère correctement l'URL du rapport d'erreur formaté.
+	* Il simule l'environnement, l'OS, et le numéro de version, puis vérifie que l'URL générée correspond à l'URL attendue,
+	* en s'assurant que la méthode application.getHostServices().showDocument() est appelée avec l'URL correcte.
+	*/
+	@DisplayName("reportError() ouvre l'URL correcte avec le rapport d'erreur formaté")
+	@Test
+	public void testReportError() {
+
+		HostServices hostServices = Mockito.mock(HostServices.class);
+		Mockito.when(application.getHostServices()).thenReturn(hostServices);
+		Mockito.when(errorCode.toString()).thenReturn("ERR123");
+		Mockito.when(environment.getAppVersion()).thenReturn("1.0.0");
+		Mockito.when(environment.getBuildNumber()).thenReturn(Optional.of("1001"));
+
+		errorController.reportError();
+
+		String expectedUrl = "https://github.com/cryptomator/cryptomator/discussions/new?category=Errors&title=Error+ERR123&body=" +
+			URLEncoder.encode("<!-- 💚 Thank you for reporting this error. -->\n" +
+				"OS: " + System.getProperty("os.name") + " / " + System.getProperty("os.version") + "\n" +
+				"App: 1.0.0 / 1001\n" +
+				"\n" +
+				"<!-- ✏ Please describe what happened as accurately as possible. -->\n" +
+				"Description:\n" +
+				"\n" +
+				"<!-- 📋 Please also copy and paste the details from the error window. -->\n" +
+				"Details:\n" +
+				"\n" +
+				"<!-- ❗ If the description or the detail text is missing, the discussion will be deleted. -->\n", 
+				StandardCharsets.UTF_8);
+
+		Mockito.verify(hostServices).showDocument(expectedUrl);
+	}
+
+	/**
+	* Vérifie que la méthode searchError() génère l'URL de recherche d'erreur correctement en fonction du code d'erreur donné.
+	* Il s'assure que le formatage de l'URL avec le code d'erreur est correct,
+	* et que la méthode application.getHostServices().showDocument() est appelée avec l'URL générée.
+	*/
+	@DisplayName("searchError() ouvre l'URL correcte pour la recherche d'erreur")
+	@Test
+	public void testSearchError() {
+
+		HostServices hostServices = Mockito.mock(HostServices.class);
+		Mockito.when(application.getHostServices()).thenReturn(hostServices);
+		Mockito.when(errorCode.toString()).thenReturn("ERR123:456");
+
+		errorController.searchError();
+
+		String expectedUrl = "https://github.com/cryptomator/cryptomator/discussions/categories/errors?discussions_q=category:Errors+ERR123+OR+456";
+		Mockito.verify(hostServices).showDocument(expectedUrl);
+	}
+
+
+
+
 }
