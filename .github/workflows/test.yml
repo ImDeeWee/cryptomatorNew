@@ -25,12 +25,12 @@ jobs:
           cache: 'maven'
       - name: Build and Test
         run: |
-          export MAVEN_OPTS="-XX:+UnlockDiagnosticVMOptions -XX:+BytecodeVerificationLocal -XX:+PrintFlagsFinal"
+          export MAVEN_OPTS="-XX:+UnlockDiagnosticVMOptions -XX:+BytecodeVerificationLocal -XX:+DebugNonSafepoints -XX:+PrintFlagsFinal"
           xvfb-run mvn -B verify -Djavafx.platform=linux jacoco:report -Pcoverage
           unset MAVEN_OPTS
 
       - name: Get JaCoCo Coverage
-        id: coverage  
+        id: coverage
         run: |
           coverage=$(python3 config/coverage.py target/site/jacoco/jacoco.csv) 
           echo "COVERAGE=$coverage" >> $GITHUB_ENV
