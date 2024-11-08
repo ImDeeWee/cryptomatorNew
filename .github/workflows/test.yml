@@ -24,11 +24,10 @@ jobs:
           java-version: ${{ env.JAVA_VERSION }}
           cache: 'maven'
       - name: Build and Test
-        run:
+        run: |
           export MAVEN_OPTS="-XX:+UnlockDiagnosticVMOptions -XX:+BytecodeVerificationLocal -XX:+PrintFlagsFinal"
-          xvfb-run mvn -B verify -Djavafx.platform=linux jacoco:report -Pcoverage | grep 'BytecodeVerificationLocal'
+          xvfb-run mvn -B verify -Djavafx.platform=linux jacoco:report -Pcoverage
           unset MAVEN_OPTS
-      
 
       - name: Get JaCoCo Coverage
         id: coverage  
