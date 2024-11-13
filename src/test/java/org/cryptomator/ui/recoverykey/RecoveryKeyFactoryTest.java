@@ -99,6 +99,10 @@ public class RecoveryKeyFactoryTest {
 		Assertions.assertEquals(extendedValidationResult, result);
 	}
 
+	/**
+    * Lève une IllegalArgumentException lorsque la fonction newMasterkeyFileWithPassphrase() reçoit une clé de récupération invalide.
+    * L'objectif est de vérifier que la méthode valide correctement l'entrée et lève une exception en cas de clé de récupération incorrecte.
+    */
 	@Test
     @DisplayName("newMasterkeyFileWithPassphrase() lève une IllegalArgumentException pour une recovery key invalide")
     public void testNewMasterkeyFileWithPassphrase_InvalidRecoveryKey() {
@@ -113,6 +117,12 @@ public class RecoveryKeyFactoryTest {
         });
     }
 
+
+	/**
+    * Lève une IOException lorsque la fonction newMasterkeyFileWithPassphrase() échoue à persister la clé masterkey
+    * en raison d'une exception dans la méthode persist() de masterkeyFileAccess.
+    * L'objectif est de s'assurer que l'IOException est correctement propagée et non capturée silencieusement par la méthode.
+    */
 	@Test
     @DisplayName("newMasterkeyFileWithPassphrase() lève une IOException quand masterkeyFileAccess.persist() échoue")
     public void testNewMasterkeyFileWithPassphrase_PersistFails(@TempDir Path tempDir) throws IOException {

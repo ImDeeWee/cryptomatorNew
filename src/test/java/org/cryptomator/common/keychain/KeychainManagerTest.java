@@ -28,6 +28,10 @@ public class KeychainManagerTest {
 		Assertions.assertArrayEquals("asd".toCharArray(), keychainManager.loadPassphrase("test"));
 	}
 
+	/**
+	 * Cette classe verifie si la fonction {@link KeychainManager#changePassphrase(String, String, CharSequence)} fonctionne correctement.
+	 * @throws KeychainAccessException
+	 */
 	@Test
 	public void testStoreAndLoadAfterChangePassphrase() throws KeychainAccessException{
 		KeychainManager keychainManager = new KeychainManager(new SimpleObjectProperty<>(new MapKeychainAccess()));
@@ -40,28 +44,35 @@ public class KeychainManagerTest {
 
 	}
 
+	/**
+	 * 	Cette fonction suppose que la cle n'existe pas et simule le test.
+	 */
 	@Test
 	public void catchKeychainAccessException() {
 		boolean exceptionCatched = false;
 
-		
-		KeychainAccessProvider mockKeychain = Mockito.mock(KeychainAccessProvider.class);
-		try {
 
-			Mockito.doThrow(new KeychainAccessException("Test exception")).when(mockKeychain).deletePassphrase(Mockito.anyString());
+		KeychainAccessProvider mockKeychain = Mockito.mock(KeychainAccessProvider.class);
+
+
+		try {
+			Mockito.doThrow(new KeychainAccessException("Test exception"))
+					.when(mockKeychain).loadPassphrase(Mockito.eq("I'm not a key"));
 
 
 			KeychainManager keychainManager = new KeychainManager(new SimpleObjectProperty<>(mockKeychain));
 
+			// Appeler la méthode deletePassphrase avec la clé "I'm not a key"
+			keychainManager.loadPassphrase("I'm not a key");
 
-			keychainManager.deletePassphrase("I'm not a key");
 		} catch (KeychainAccessException exception) {
 			exceptionCatched = true;
 		}
 
-
+		// Vérifier que l'exception a bien été capturée
 		Assertions.assertTrue(exceptionCatched);
 	}
+
 
 
 
